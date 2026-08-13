@@ -106,8 +106,10 @@ function setButtonLoading(button, isLoading, loadingText) {
 }
 
 async function apiRequest(endpoint, options = {}) {
+  const isFormData = options.body instanceof FormData;
+
   const headers = {
-    ...(options.body
+    ...(!isFormData && options.body
       ? { "Content-Type": "application/json" }
       : {}),
     ...options.headers,
@@ -398,6 +400,28 @@ function renderStudentComplaints(complaints) {
           <p class="complaint-description">
             ${escapeHtml(complaint.description)}
           </p>
+          ${
+  complaint.evidence_image
+    ? `
+      <div class="complaint-evidence">
+        <p class="evidence-label">Attached evidence</p>
+
+        <a
+          href="${escapeHtml(complaint.evidence_image)}"
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label="Open complaint evidence image"
+        >
+          <img
+            src="${escapeHtml(complaint.evidence_image)}"
+            alt="Evidence for ${escapeHtml(complaint.title)}"
+            loading="lazy"
+          />
+        </a>
+      </div>
+    `
+    : ""
+}
 
           <div class="complaint-meta">
             <span class="category-chip">
@@ -501,18 +525,51 @@ complaintForm.addEventListener("submit", async (event) => {
   const submitButton =
     complaintForm.querySelector('button[type="submit"]');
 
-  const body = {
-    title:
-      document.getElementById("complaintTitle").value,
-    category:
-      document.getElementById("complaintCategory").value,
-    location:
-      document.getElementById("complaintLocation").value,
-    description:
-      document.getElementById("complaintDescription").value,
-    priority:
-      document.getElementById("complaintPriority").value,
-  };
+  const evidenceInput =
+    document.getElementById("complaintEvidence");
+
+  const evidenceFile = evidenceInput?.files?.[0];
+
+  if (evidenceFile && evidenceFile.size > 5 * 1024 * 1024) {
+    showToast(
+      "Evidence image must be smaller than 5 MB.",
+      "error"
+    );
+    return;
+  }
+
+  const formData = new FormData();
+
+  formData.append(
+    "title",
+    document.getElementById("complaintTitle").value.trim()
+  );
+
+  formData.append(
+    "category",
+    document.getElementById("complaintCategory").value
+  );
+
+  formData.append(
+    "location",
+    document.getElementById("complaintLocation").value.trim()
+  );
+
+  formData.append(
+    "description",
+    document
+      .getElementById("complaintDescription")
+      .value.trim()
+  );
+
+  formData.append(
+    "priority",
+    document.getElementById("complaintPriority").value
+  );
+
+  if (evidenceFile) {
+    formData.append("evidence", evidenceFile);
+  }
 
   try {
     setButtonLoading(
@@ -523,7 +580,7 @@ complaintForm.addEventListener("submit", async (event) => {
 
     const data = await apiRequest("/complaints", {
       method: "POST",
-      body: JSON.stringify(body),
+      body: formData,
     });
 
     complaintForm.reset();
@@ -853,6 +910,28 @@ function renderAdminComplaints(complaints) {
             <p class="complaint-description">
               ${escapeHtml(complaint.description)}
             </p>
+            ${
+  complaint.evidence_image
+    ? `
+      <div class="complaint-evidence">
+        <p class="evidence-label">Student evidence</p>
+
+        <a
+          href="${escapeHtml(complaint.evidence_image)}"
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label="Open student evidence image"
+        >
+          <img
+            src="${escapeHtml(complaint.evidence_image)}"
+            alt="Evidence for ${escapeHtml(complaint.title)}"
+            loading="lazy"
+          />
+        </a>
+      </div>
+    `
+    : ""
+}
 
             <div class="complaint-meta">
               <span class="category-chip">

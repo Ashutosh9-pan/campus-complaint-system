@@ -16,17 +16,22 @@ const {
   authorize,
 } = require("../middleware/authMiddleware");
 
+const {
+  uploadEvidence,
+} = require("../middleware/uploadMiddleware");
+
 const router = express.Router();
 
-// Student: create a new complaint
+// Student: create complaint with optional evidence image
 router.post(
   "/",
   authenticate,
   authorize("student"),
+  uploadEvidence.single("evidence"),
   createComplaint
 );
 
-// Student: view own complaints
+// Student: view their own complaints
 router.get(
   "/mine",
   authenticate,

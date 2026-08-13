@@ -81,3 +81,6 @@ ADD COLUMN assigned_at TIMESTAMP NULL AFTER assigned_department;
 
 CREATE INDEX idx_complaints_department
 ON complaints (assigned_department);
+-- Complaint evidence image
+ALTER TABLE complaints
+ADD COLUMN evidence_image VARCHAR(255) NULL AFTER description;

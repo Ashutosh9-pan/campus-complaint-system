@@ -17,16 +17,30 @@ const createComplaint = async (req, res) => {
       });
     }
 
+    // Multer se uploaded image ka public URL
+    const evidenceImage = req.file
+      ? `/uploads/${req.file.filename}`
+      : null;
+
     const [result] = await db.query(
       `INSERT INTO complaints
-       (student_id, title, category, location, description, priority)
-       VALUES (?, ?, ?, ?, ?, ?)`,
+       (
+         student_id,
+         title,
+         category,
+         location,
+         description,
+         evidence_image,
+         priority
+       )
+       VALUES (?, ?, ?, ?, ?, ?, ?)`,
       [
         req.user.id,
         title.trim(),
-        category,
+        category.trim(),
         location.trim(),
         description.trim(),
+        evidenceImage,
         priority || "Medium",
       ]
     );
@@ -35,6 +49,7 @@ const createComplaint = async (req, res) => {
       success: true,
       message: "Complaint raised successfully.",
       complaintId: result.insertId,
+      evidenceImage,
     });
   } catch (error) {
     console.error("Create complaint error:", error.message);
@@ -50,7 +65,7 @@ const getMyComplaints = async (req, res) => {
   try {
     const [complaints] = await db.query(
       `SELECT id, title, category, location, description,
-              priority, status, admin_note,
+              priority, status, admin_note,evidence_image,
               assigned_department, assigned_at, created_at,
               updated_at, resolved_at
        FROM complaints
@@ -88,6 +103,7 @@ const getAllComplaints = async (req, res) => {
         c.priority,
         c.status,
         c.admin_note,
+        c.evidence_image,
         c.assigned_department,
         c.assigned_at,
         c.created_at,
