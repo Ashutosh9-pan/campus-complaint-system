@@ -570,11 +570,112 @@ const deleteOwnComplaint = async (req, res) => {
     });
   }
 };
+const getComplaintAnalytics = async (req, res) => {
+  try {
+    const [summaryRows] = await db.query(`
+      SELECT
+        COUNT(*) AS total_complaints,
+        SUM(status = 'Raised') AS raised_complaints,
+        SUM(status = 'In Progress') AS in_progress_complaints,
+        SUM(status = 'Resolved') AS resolved_complaints,
+        ROUND(
+          (SUM(status = 'Resolved') / NULLIF(COUNT(*), 0)) * 100,
+          1
+        ) AS resolution_rate,
+        ROUND(
+          AVG(
+            CASE
+              WHEN resolved_at IS NOT NULL
+              THEN TIMESTAMPDIFF(HOUR, created_at, resolved_at)
+            END
+          ),
+          1
+        ) AS average_resolution_hours
+      FROM complaints
+    `);
+
+    const [categoryRows] = await db.query(`
+      SELECT
+        category,
+        COUNT(*) AS complaint_count
+      FROM complaints
+      GROUP BY category
+      ORDER BY complaint_count DESC, category ASC
+    `);
+
+    const [priorityRows] = await db.query(`
+      SELECT
+        priority,
+        COUNT(*) AS complaint_count
+      FROM complaints
+      GROUP BY priority
+      ORDER BY FIELD(priority, 'Urgent', 'High', 'Medium', 'Low')
+    `);
+
+    const [departmentRows] = await db.query(`
+      SELECT
+        COALESCE(assigned_department, 'Unassigned') AS department,
+        COUNT(*) AS complaint_count
+      FROM complaints
+      GROUP BY assigned_department
+      ORDER BY complaint_count DESC
+    `);
+
+    const [locationRows] = await db.query(`
+      SELECT
+        location,
+        COUNT(*) AS complaint_count
+      FROM complaints
+      WHERE location IS NOT NULL
+        AND TRIM(location) <> ''
+      GROUP BY location
+      ORDER BY complaint_count DESC, location ASC
+      LIMIT 5
+    `);
+
+    const summary = summaryRows[0];
+
+    return res.status(200).json({
+      success: true,
+      analytics: {
+        summary: {
+          totalComplaints:
+            Number(summary.total_complaints) || 0,
+          raisedComplaints:
+            Number(summary.raised_complaints) || 0,
+          inProgressComplaints:
+            Number(summary.in_progress_complaints) || 0,
+          resolvedComplaints:
+            Number(summary.resolved_complaints) || 0,
+          resolutionRate:
+            Number(summary.resolution_rate) || 0,
+          averageResolutionHours:
+            Number(summary.average_resolution_hours) || 0,
+        },
+        categories: categoryRows,
+        priorities: priorityRows,
+        departments: departmentRows,
+        topLocations: locationRows,
+      },
+    });
+  } catch (error) {
+    console.error(
+      "Get complaint analytics error:",
+      error.message
+    );
+
+    return res.status(500).json({
+      success: false,
+      message: "Unable to load complaint analytics.",
+    });
+  }
+};
 
 module.exports = {
   createComplaint,
   getMyComplaints,
   getAllComplaints,
+  getComplaintAnalytics,
   updateComplaintStatus,
   updateComplaintAssignment,
   getComplaintHistory,

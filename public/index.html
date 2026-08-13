@@ -489,6 +489,94 @@
           </article>
         </div>
 
+        <section class="panel analytics-panel">
+  <div class="panel-heading">
+    <div>
+      <p class="eyebrow">Insights</p>
+      <h2>Complaint analytics</h2>
+      <p>
+        Monitor resolution performance and identify recurring
+        campus issues.
+      </p>
+    </div>
+
+    <button
+      id="refreshAnalytics"
+      class="secondary-button compact-button"
+      type="button"
+    >
+      Refresh analytics
+    </button>
+  </div>
+
+  <div class="analytics-summary">
+    <article class="analytics-summary-card">
+      <span>Resolution rate</span>
+      <strong id="analyticsResolutionRate">0%</strong>
+    </article>
+
+    <article class="analytics-summary-card">
+      <span>Average resolution time</span>
+      <strong id="analyticsResolutionTime">0 hrs</strong>
+    </article>
+
+    <article class="analytics-summary-card">
+      <span>Assigned departments</span>
+      <strong id="analyticsDepartmentCount">0</strong>
+    </article>
+  </div>
+
+  <div class="analytics-grid">
+    <article class="analytics-card">
+      <div class="analytics-card-heading">
+        <h3>Complaints by category</h3>
+        <span>Category distribution</span>
+      </div>
+
+      <div
+        id="categoryAnalytics"
+        class="analytics-list"
+      ></div>
+    </article>
+
+    <article class="analytics-card">
+      <div class="analytics-card-heading">
+        <h3>Priority distribution</h3>
+        <span>Urgency overview</span>
+      </div>
+
+      <div
+        id="priorityAnalytics"
+        class="analytics-list"
+      ></div>
+    </article>
+
+    <article class="analytics-card">
+      <div class="analytics-card-heading">
+        <h3>Department workload</h3>
+        <span>Complaint assignments</span>
+      </div>
+
+      <div
+        id="departmentAnalytics"
+        class="analytics-list"
+      ></div>
+    </article>
+
+    <article class="analytics-card">
+      <div class="analytics-card-heading">
+        <h3>Frequently reported locations</h3>
+        <span>Top five locations</span>
+      </div>
+
+      <div
+        id="locationAnalytics"
+        class="analytics-list"
+      ></div>
+    </article>
+  </div>
+</section>
+
         <section class="panel">
           <div class="panel-heading admin-heading">
             <div>
@@ -586,6 +674,6 @@
     </section>
   </div>
 
-<script src="js/app.js?v=3"></script>
+<script src="js/app.js?v=4"></script>
 </body>
 </html>

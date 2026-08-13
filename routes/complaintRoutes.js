@@ -4,6 +4,7 @@ const {
   createComplaint,
   getMyComplaints,
   getAllComplaints,
+  getComplaintAnalytics,
   updateComplaintStatus,
   updateComplaintAssignment,
   getComplaintHistory,
@@ -45,6 +46,14 @@ router.get(
   authenticate,
   authorize("admin"),
   getAllComplaints
+);
+
+// Admin: view complaint analytics
+router.get(
+  "/analytics",
+  authenticate,
+  authorize("admin"),
+  getComplaintAnalytics
 );
 
 // Student or admin: view complaint status history

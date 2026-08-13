@@ -19,6 +19,30 @@ const studentComplaintList =
 const adminComplaintList =
   document.getElementById("adminComplaintList");
 
+const refreshAnalyticsButton =
+  document.getElementById("refreshAnalytics");
+
+const analyticsResolutionRate =
+  document.getElementById("analyticsResolutionRate");
+
+const analyticsResolutionTime =
+  document.getElementById("analyticsResolutionTime");
+
+const analyticsDepartmentCount =
+  document.getElementById("analyticsDepartmentCount");
+
+const categoryAnalytics =
+  document.getElementById("categoryAnalytics");
+
+const priorityAnalytics =
+  document.getElementById("priorityAnalytics");
+
+const departmentAnalytics =
+  document.getElementById("departmentAnalytics");
+
+const locationAnalytics =
+  document.getElementById("locationAnalytics");
+
 const toast = document.getElementById("toast");
 const editComplaintModal = document.getElementById("editComplaintModal");
 const editComplaintForm = document.getElementById("editComplaintForm");
@@ -248,6 +272,7 @@ async function showApplication() {
   try {
     if (isAdmin) {
       await loadAdminComplaints();
+      await loadComplaintAnalytics();
     } else {
       await loadStudentComplaints();
     }
@@ -1071,6 +1096,108 @@ function buildAdminQuery() {
   return queryString ? `?${queryString}` : "";
 }
 
+function renderAnalyticsList(container, items, labelKey) {
+  if (!container) return;
+
+  if (!items || items.length === 0) {
+    container.innerHTML = `
+      <div class="analytics-empty">
+        No analytics data available.
+      </div>
+    `;
+    return;
+  }
+
+  const maximumCount = Math.max(
+    ...items.map((item) => Number(item.complaint_count) || 0),
+    1
+  );
+
+  container.innerHTML = items
+    .map((item) => {
+      const label = item[labelKey] || "Unknown";
+      const count = Number(item.complaint_count) || 0;
+      const percentage = Math.round(
+        (count / maximumCount) * 100
+      );
+
+      return `
+        <div class="analytics-item">
+          <div class="analytics-item-info">
+            <span>${escapeHtml(String(label))}</span>
+            <strong>${count}</strong>
+          </div>
+
+          <div
+            class="analytics-progress"
+            role="progressbar"
+            aria-valuemin="0"
+            aria-valuemax="${maximumCount}"
+            aria-valuenow="${count}"
+            aria-label="${escapeHtml(String(label))}: ${count} complaints"
+          >
+            <span style="width: ${percentage}%"></span>
+          </div>
+        </div>
+      `;
+    })
+    .join("");
+}
+
+async function loadComplaintAnalytics() {
+  if (!currentUser || currentUser.role !== "admin") {
+    return;
+  }
+
+  try {
+    const data = await apiRequest("/complaints/analytics");
+    const analytics = data.analytics;
+    const summary = analytics.summary;
+
+    analyticsResolutionRate.textContent =
+      `${summary.resolutionRate}%`;
+
+    analyticsResolutionTime.textContent =
+      summary.averageResolutionHours > 0
+        ? `${summary.averageResolutionHours} hrs`
+        : "Not available";
+
+    const assignedDepartments =
+      analytics.departments.filter(
+        (item) => item.department !== "Unassigned"
+      ).length;
+
+    analyticsDepartmentCount.textContent =
+      assignedDepartments;
+
+    renderAnalyticsList(
+      categoryAnalytics,
+      analytics.categories,
+      "category"
+    );
+
+    renderAnalyticsList(
+      priorityAnalytics,
+      analytics.priorities,
+      "priority"
+    );
+
+    renderAnalyticsList(
+      departmentAnalytics,
+      analytics.departments,
+      "department"
+    );
+
+    renderAnalyticsList(
+      locationAnalytics,
+      analytics.topLocations,
+      "location"
+    );
+  } catch (error) {
+    showToast(error.message, "error");
+  }
+}
+
 async function loadAdminComplaints() {
   adminComplaintList.innerHTML = `
     <div class="empty-state">
@@ -1207,11 +1334,32 @@ document
   .addEventListener("click", async () => {
     try {
       await loadAdminComplaints();
+      await loadComplaintAnalytics();
       showToast("Complaint queue refreshed.");
     } catch (error) {
       showToast(error.message, "error");
     }
   });
+
+refreshAnalyticsButton?.addEventListener(
+  "click",
+  async () => {
+    try {
+      setButtonLoading(
+        refreshAnalyticsButton,
+        true,
+        "Refreshing..."
+      );
+
+      await loadComplaintAnalytics();
+      showToast("Analytics refreshed successfully.");
+    } catch (error) {
+      showToast(error.message, "error");
+    } finally {
+      setButtonLoading(refreshAnalyticsButton, false);
+    }
+  }
+);
 
 /* Initial Session */
 
