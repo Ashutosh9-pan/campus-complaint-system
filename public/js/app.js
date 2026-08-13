@@ -408,7 +408,10 @@ function renderStudentComplaints(complaints) {
           <div class="complaint-card-top">
             <div>
               <p class="complaint-number">
-                Complaint #${escapeHtml(complaint.id)}
+${escapeHtml(
+  complaint.reference_number ||
+  `Complaint #${complaint.id}`
+)}
               </p>
 
               <h3>${escapeHtml(complaint.title)}</h3>
@@ -465,7 +468,23 @@ function renderStudentComplaints(complaints) {
               ${escapeHtml(complaint.priority)} priority
             </span>
 
-            <span>${formatDate(complaint.created_at)}</span>
+<span class="registered-date-badge">
+  Registered: ${formatDate(complaint.created_at)}
+</span>
+
+       <span class="due-date-badge">
+  Due: ${
+    complaint.due_at
+      ? formatDate(complaint.due_at)
+      : "Not assigned"
+  }
+</span>
+
+${
+  complaint.is_overdue
+    ? `<span class="overdue-badge">Overdue</span>`
+    : ""
+}
 
             ${
               complaint.assigned_department
@@ -918,7 +937,10 @@ function renderAdminComplaints(complaints) {
             <div class="complaint-card-top">
               <div>
                 <p class="complaint-number">
-                  Complaint #${escapeHtml(complaint.id)}
+                  ${escapeHtml(
+                    complaint.reference_number ||
+                    `Complaint #${complaint.id}`
+                  )}
                 </p>
 
                 <h3>${escapeHtml(complaint.title)}</h3>
@@ -975,9 +997,23 @@ function renderAdminComplaints(complaints) {
                 ${escapeHtml(complaint.priority)} priority
               </span>
 
-              <span>
-                ${formatDate(complaint.created_at)}
+              <span class="registered-date-badge">
+                Registered: ${formatDate(complaint.created_at)}
               </span>
+
+              <span class="due-date-badge">
+                Due: ${
+                  complaint.due_at
+                    ? formatDate(complaint.due_at)
+                    : "Not assigned"
+                }
+              </span>
+
+              ${
+                complaint.is_overdue
+                  ? `<span class="overdue-badge">Overdue</span>`
+                  : ""
+              }
 
               ${
                 complaint.assigned_department

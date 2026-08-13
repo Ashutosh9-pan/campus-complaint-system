@@ -13,14 +13,34 @@ const createComplaint = async (req, res) => {
     if (!title || !category || !location || !description) {
       return res.status(400).json({
         success: false,
-        message: "Title, category, location and description are required.",
+        message:
+          "Title, category, location and description are required.",
       });
     }
 
-    // Multer se uploaded image ka public URL
+    const validPriorities = ["Low", "Medium", "High"];
+
+    const selectedPriority = validPriorities.includes(priority)
+      ? priority
+      : "Medium";
+
     const evidenceImage = req.file
       ? `/uploads/${req.file.filename}`
       : null;
+
+    // Priority-based SLA:
+    // High = 1 day, Medium = 3 days, Low = 7 days
+    const slaDays = {
+      High: 1,
+      Medium: 3,
+      Low: 7,
+    };
+
+    const dueAt = new Date();
+
+    dueAt.setDate(
+      dueAt.getDate() + slaDays[selectedPriority]
+    );
 
     const [result] = await db.query(
       `INSERT INTO complaints
@@ -31,9 +51,10 @@ const createComplaint = async (req, res) => {
          location,
          description,
          evidence_image,
-         priority
+         priority,
+         due_at
        )
-       VALUES (?, ?, ?, ?, ?, ?, ?)`,
+       VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
       [
         req.user.id,
         title.trim(),
@@ -41,18 +62,33 @@ const createComplaint = async (req, res) => {
         location.trim(),
         description.trim(),
         evidenceImage,
-        priority || "Medium",
+        selectedPriority,
+        dueAt,
       ]
+    );
+
+    const referenceNumber =
+      `CR-${new Date().getFullYear()}-${String(
+        result.insertId
+      ).padStart(4, "0")}`;
+
+    await db.query(
+      `UPDATE complaints
+       SET reference_number = ?
+       WHERE id = ?`,
+      [referenceNumber, result.insertId]
     );
 
     return res.status(201).json({
       success: true,
       message: "Complaint raised successfully.",
       complaintId: result.insertId,
+      referenceNumber,
+      dueAt,
       evidenceImage,
     });
   } catch (error) {
-    console.error("Create complaint error:", error.message);
+    console.error("Create complaint error:", error);
 
     return res.status(500).json({
       success: false,
@@ -64,10 +100,17 @@ const createComplaint = async (req, res) => {
 const getMyComplaints = async (req, res) => {
   try {
     const [complaints] = await db.query(
-      `SELECT id, title, category, location, description,
-              priority, status, admin_note,evidence_image,
-              assigned_department, assigned_at, created_at,
-              updated_at, resolved_at
+      `SELECT id, reference_number, title, category, location,
+              description, priority, status, admin_note,
+              evidence_image, assigned_department, assigned_at,
+              created_at, updated_at, resolved_at, due_at,
+              CASE
+                WHEN due_at IS NOT NULL
+                  AND due_at < NOW()
+                  AND status <> 'Resolved'
+                THEN TRUE
+                ELSE FALSE
+              END AS is_overdue
        FROM complaints
        WHERE student_id = ?
        ORDER BY created_at DESC`,
@@ -96,6 +139,7 @@ const getAllComplaints = async (req, res) => {
     let query = `
       SELECT
         c.id,
+        c.reference_number,
         c.title,
         c.category,
         c.location,
@@ -109,6 +153,14 @@ const getAllComplaints = async (req, res) => {
         c.created_at,
         c.updated_at,
         c.resolved_at,
+        c.due_at,
+        CASE
+          WHEN c.due_at IS NOT NULL
+            AND c.due_at < NOW()
+            AND c.status <> 'Resolved'
+          THEN TRUE
+          ELSE FALSE
+        END AS is_overdue,
         u.name AS student_name,
         u.email AS student_email,
         u.hostel,
@@ -139,6 +191,7 @@ const getAllComplaints = async (req, res) => {
       query += `
         AND (
           c.title LIKE ?
+          OR c.reference_number LIKE ?
           OR c.location LIKE ?
           OR u.name LIKE ?
           OR u.email LIKE ?
@@ -147,6 +200,7 @@ const getAllComplaints = async (req, res) => {
 
       const searchValue = `%${search}%`;
       values.push(
+        searchValue,
         searchValue,
         searchValue,
         searchValue,
@@ -473,12 +527,7 @@ const updateOwnComplaint = async (req, res) => {
       "Other",
     ];
 
-    const allowedPriorities = [
-      "Low",
-      "Medium",
-      "High",
-      "Urgent",
-    ];
+    const allowedPriorities = ["Low", "Medium", "High"];
 
     if (!allowedCategories.includes(category)) {
       return res.status(400).json({
@@ -494,13 +543,20 @@ const updateOwnComplaint = async (req, res) => {
       });
     }
 
+    const slaDays = {
+      High: 1,
+      Medium: 3,
+      Low: 7,
+    };
+
     const [result] = await db.query(
       `UPDATE complaints
        SET title = ?,
            category = ?,
            location = ?,
            description = ?,
-           priority = ?
+           priority = ?,
+           due_at = DATE_ADD(created_at, INTERVAL ? DAY)
        WHERE id = ?
          AND student_id = ?
          AND status = 'Raised'`,
@@ -510,6 +566,7 @@ const updateOwnComplaint = async (req, res) => {
         location.trim(),
         description.trim(),
         priority,
+        slaDays[priority],
         complaintId,
         req.user.id,
       ]
@@ -578,6 +635,11 @@ const getComplaintAnalytics = async (req, res) => {
         SUM(status = 'Raised') AS raised_complaints,
         SUM(status = 'In Progress') AS in_progress_complaints,
         SUM(status = 'Resolved') AS resolved_complaints,
+        SUM(
+          due_at IS NOT NULL
+          AND due_at < NOW()
+          AND status <> 'Resolved'
+        ) AS overdue_complaints,
         ROUND(
           (SUM(status = 'Resolved') / NULLIF(COUNT(*), 0)) * 100,
           1
@@ -647,6 +709,8 @@ const getComplaintAnalytics = async (req, res) => {
             Number(summary.in_progress_complaints) || 0,
           resolvedComplaints:
             Number(summary.resolved_complaints) || 0,
+          overdueComplaints:
+            Number(summary.overdue_complaints) || 0,
           resolutionRate:
             Number(summary.resolution_rate) || 0,
           averageResolutionHours:

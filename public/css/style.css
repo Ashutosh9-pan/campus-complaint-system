@@ -1585,3 +1585,73 @@ body.modal-open { overflow: hidden; }
     padding: 20px;
   }
 }
+/* Reference number, due date and SLA status */
+
+.reference-badge,
+.due-date-badge,
+.overdue-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 13px;
+  border-radius: 999px;
+  font-size: 0.82rem;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.reference-badge {
+  color: #075985;
+  background: #e0f2fe;
+  border: 1px solid #bae6fd;
+}
+
+.due-date-badge {
+  color: #1d4ed8;
+  background: #dbeafe;
+  border: 1px solid #93c5fd;
+  box-shadow: 0 3px 10px rgba(37, 99, 235, 0.12);
+}
+
+.overdue-badge {
+  color: #ffffff;
+  background: #b91c1c;
+  border: 1px solid #991b1b;
+  box-shadow: 0 4px 12px rgba(153, 27, 27, 0.3);
+  animation: overduePulse 2s ease-in-out infinite;
+}
+
+@keyframes overduePulse {
+  50% {
+    box-shadow: 0 0 0 5px rgba(185, 28, 28, 0.18);
+  }
+}
+
+@media (max-width: 600px) {
+  .reference-badge,
+  .due-date-badge,
+  .overdue-badge {
+    padding: 7px 10px;
+    font-size: 0.75rem;
+  }
+}
+.registered-date-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 8px 13px;
+  border: 1px solid #a7f3d0;
+  border-radius: 999px;
+  color: #047857;
+  background: #d1fae5;
+  font-size: 0.82rem;
+  font-weight: 700;
+  line-height: 1;
+  box-shadow: 0 3px 10px rgba(4, 120, 87, 0.1);
+}
+
+@media (max-width: 600px) {
+  .registered-date-badge {
+    padding: 7px 10px;
+    font-size: 0.75rem;
+  }
+}
