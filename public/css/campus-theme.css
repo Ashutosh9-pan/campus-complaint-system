@@ -1,0 +1,422 @@
+/* CAMPUSRESOLVE ROYAL BLUE + AMBER THEME
+   Load after css/style.css */
+
+:root {
+  --campus-blue-950: #071a3a;
+  --campus-blue-900: #0b2452;
+  --campus-blue-800: #123d82;
+  --campus-blue-700: #1859b5;
+  --campus-blue-600: #2675d8;
+  --campus-blue-100: #e7f0ff;
+  --campus-amber-500: #f5a524;
+  --campus-amber-100: #fff3d6;
+  --surface: #f7f8fc;
+  --surface-alt: #edf2fa;
+  --text: #102344;
+  --muted: #63738d;
+  --border: #d8e0ee;
+  --teal-700: var(--campus-blue-800);
+  --teal-600: var(--campus-blue-700);
+  --teal-500: var(--campus-blue-600);
+  --teal-100: var(--campus-blue-100);
+  --shadow-sm: 0 12px 34px rgba(23, 54, 105, 0.09);
+  --shadow-lg: 0 28px 74px rgba(19, 46, 94, 0.17);
+}
+
+body,
+.app-view {
+  color: var(--text);
+  background:
+    radial-gradient(circle at 95% 8%, rgba(38, 117, 216, 0.11), transparent 28rem),
+    radial-gradient(circle at 5% 34%, rgba(245, 165, 36, 0.08), transparent 24rem),
+    #f7f8fc;
+}
+
+.auth-intro {
+  color: #fff;
+  background:
+    radial-gradient(circle at 90% 10%, rgba(245, 165, 36, 0.2), transparent 28%),
+    radial-gradient(circle at 10% 90%, rgba(74, 145, 255, 0.24), transparent 36%),
+    linear-gradient(145deg, #071a3a, #0c2f68 70%, #123d82);
+}
+
+.auth-copy .eyebrow,
+.auth-copy h1 span,
+.workflow-preview span {
+  color: #ffc85c;
+}
+
+.auth-panel {
+  background:
+    radial-gradient(circle at 100% 0, rgba(38, 117, 216, 0.13), transparent 28%),
+    #f7f8fc;
+}
+
+.auth-card {
+  border-color: rgba(38, 117, 216, 0.2);
+  background: #fff;
+  box-shadow: 0 28px 75px rgba(12, 47, 104, 0.16);
+}
+
+.auth-card::before {
+  background: linear-gradient(90deg, #123d82, #2675d8 62%, #f5a524);
+}
+
+.auth-tabs { background: #eaf0fa; }
+.auth-tab { color: #687993; }
+.auth-tab.active {
+  color: #123d82;
+  background: #fff;
+  box-shadow: 0 8px 22px rgba(20, 59, 125, 0.11);
+}
+
+.brand-icon {
+  color: #fff;
+  background: linear-gradient(145deg, #123d82, #2675d8);
+  box-shadow: 0 12px 28px rgba(24, 89, 181, 0.24);
+}
+
+.primary-button {
+  color: #fff;
+  background: linear-gradient(135deg, #123d82, #2675d8);
+  box-shadow: 0 14px 32px rgba(24, 89, 181, 0.22);
+}
+
+.primary-button:hover {
+  box-shadow: 0 18px 38px rgba(24, 89, 181, 0.31);
+}
+
+.secondary-button,
+.icon-button {
+  color: #123d82;
+  border: 1px solid #cbd8ed;
+  background: #fff;
+}
+
+.secondary-button:hover,
+.icon-button:hover {
+  color: #fff;
+  border-color: #1859b5;
+  background: #1859b5;
+}
+
+.site-header {
+  border-bottom-color: rgba(24, 89, 181, 0.14);
+  background: rgba(255, 255, 255, 0.91);
+  box-shadow: 0 10px 32px rgba(22, 52, 102, 0.08);
+}
+
+.user-chip > span {
+  background: linear-gradient(145deg, #0b2452, #1859b5);
+}
+
+.page-heading {
+  border-color: rgba(38, 117, 216, 0.18);
+  background:
+    linear-gradient(120deg, rgba(255, 255, 255, 0.98), rgba(231, 240, 255, 0.9));
+  box-shadow: var(--shadow-sm);
+}
+
+.page-heading::before {
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 5px;
+  background: linear-gradient(#1859b5, #f5a524);
+  content: "";
+}
+
+.page-heading::after {
+  border-color: rgba(38, 117, 216, 0.08);
+}
+
+.eyebrow,
+.complaint-number {
+  color: #1859b5;
+}
+
+.stat-card,
+.panel,
+.complaint-item,
+.admin-complaint-card,
+.modal-card,
+.timeline-container {
+  color: var(--text);
+  border-color: rgba(38, 117, 216, 0.15);
+  background: rgba(255, 255, 255, 0.96);
+  box-shadow: var(--shadow-sm);
+}
+
+.stat-card::before {
+  background: linear-gradient(90deg, transparent, #2675d8, #f5a524, transparent);
+}
+
+.stat-card::after {
+  background: rgba(38, 117, 216, 0.07);
+}
+
+.stat-card:hover,
+.complaint-item:hover,
+.admin-complaint-card:hover {
+  border-color: rgba(38, 117, 216, 0.4);
+  box-shadow: 0 22px 48px rgba(21, 56, 112, 0.14);
+}
+
+.complaint-item::before,
+.admin-complaint-card::before {
+  background: linear-gradient(#2675d8, #f5a524);
+}
+
+.panel-badge,
+.complaint-meta span {
+  color: #234d8f;
+  border-color: #d6e3f7;
+  background: #edf4ff;
+}
+
+input,
+select,
+textarea,
+.modal-form input,
+.modal-form select,
+.modal-form textarea {
+  color: var(--text);
+  border-color: #d6deeb;
+  background: #fbfcff;
+}
+
+input:hover,
+select:hover,
+textarea:hover {
+  border-color: rgba(38, 117, 216, 0.55);
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+  border-color: #2675d8;
+  background: #fff;
+  box-shadow: 0 0 0 4px rgba(38, 117, 216, 0.12);
+}
+
+.password-toggle { color: #1859b5; }
+.password-toggle:hover { background: #e7f0ff; }
+
+.raised-stat strong { color: #e99100; }
+.progress-stat strong { color: #2675d8; }
+.resolved-stat strong { color: #159b67; }
+
+.status-raised {
+  color: #925c00;
+  background: var(--campus-amber-100);
+}
+
+.status-progress {
+  color: #1554a6;
+  background: #e0efff;
+}
+
+.status-resolved {
+  color: #08734a;
+  background: #ddf7eb;
+}
+
+.admin-note {
+  color: #405777;
+  border-color: rgba(38, 117, 216, 0.28);
+  background: #f0f5fd;
+}
+
+.timeline-dot {
+  background: #2675d8;
+  box-shadow: 0 0 0 2px #2675d8;
+}
+
+.modal-overlay {
+  background: rgba(7, 26, 58, 0.7);
+}
+
+.modal-close {
+  color: #123d82;
+  background: #edf4ff;
+}
+
+.modal-close:hover {
+  color: #fff;
+  border-color: #1859b5;
+  background: #1859b5;
+}
+
+.site-footer {
+  color: #b8c7df;
+  border-top-color: rgba(255, 255, 255, 0.1);
+  background: #071a3a;
+}
+
+@media (max-width: 520px) {
+  .page-heading {
+    border-radius: 18px;
+  }
+}
+
+/* Portfolio-ready interface details */
+
+.stat-card {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-content: space-between;
+  gap: 6px 16px;
+}
+
+.stat-card > span,
+.stat-card > strong { grid-column: 1; }
+
+.stat-icon {
+  display: grid;
+  width: 46px;
+  height: 46px;
+  grid-column: 2;
+  grid-row: 1 / span 2;
+  place-items: center;
+  border: 1px solid rgba(38, 117, 216, 0.13);
+  border-radius: 15px;
+  color: #1859b5;
+  background: #e7f0ff;
+  font-size: 1.25rem;
+  font-style: normal;
+  font-weight: 900;
+}
+
+.raised-icon { color: #9b6200; border-color: #ffe0a2; background: #fff3d6; }
+.progress-icon { color: #1554a6; background: #e0efff; }
+.resolved-icon { color: #08734a; border-color: #c6ecd9; background: #ddf7eb; }
+
+.category-chip { gap: 7px; }
+.category-chip b {
+  display: inline-grid;
+  width: 20px;
+  height: 20px;
+  place-items: center;
+  border-radius: 6px;
+  color: #fff;
+  background: #2675d8;
+  font-size: 0.7rem;
+}
+
+.empty-state {
+  min-height: 250px;
+  padding: 38px 24px;
+  border: 1px dashed #bdcce4;
+  border-radius: 18px;
+  background: radial-gradient(circle at 50% 25%, rgba(38, 117, 216, 0.1), transparent 7rem), #fbfcff;
+}
+
+.empty-illustration {
+  display: grid;
+  width: 68px;
+  height: 68px;
+  margin: 0 auto 18px;
+  place-items: center;
+  border: 1px solid #cbd9ee;
+  border-radius: 22px;
+  color: #1859b5;
+  background: #e7f0ff;
+  box-shadow: 0 12px 30px rgba(24, 89, 181, 0.13);
+  font-size: 1.7rem;
+}
+
+.loading-spinner {
+  display: block;
+  width: 46px;
+  height: 46px;
+  margin: 0 auto 18px;
+  border: 4px solid #dce7f7;
+  border-top-color: #2675d8;
+  border-radius: 50%;
+  animation: campus-spin 0.85s linear infinite;
+}
+
+@keyframes campus-spin { to { transform: rotate(360deg); } }
+
+.panel-heading { position: relative; margin-bottom: 36px; }
+.panel-heading::after {
+  position: absolute;
+  right: 0;
+  bottom: -13px;
+  left: 0;
+  height: 1px;
+  background: linear-gradient(90deg, #2675d8, #f5a524 28%, transparent 78%);
+  content: "";
+}
+
+@media (max-width: 520px) {
+  .stat-icon { width: 38px; height: 38px; border-radius: 12px; }
+  .empty-state { min-height: 220px; padding: 30px 18px; }
+}
+
+/* Complaint department assignment */
+
+.assignment-badge {
+  color: #123d82 !important;
+  border-color: #bfd3f2 !important;
+  background: #e7f0ff !important;
+  font-weight: 800;
+}
+
+.assignment-badge::before {
+  margin-right: 6px;
+  content: "◆";
+  color: #2675d8;
+  font-size: 0.65rem;
+}
+
+.assignment-badge.unassigned {
+  color: #75613b !important;
+  border-color: #f2ddb0 !important;
+  background: #fff7e7 !important;
+}
+
+.assignment-badge.unassigned::before {
+  color: #f5a524;
+}
+
+.assignment-form {
+  display: grid;
+  align-content: end;
+  gap: 14px;
+  padding: 20px;
+  border: 1px solid #d6e3f7;
+  border-radius: 18px;
+  background: linear-gradient(145deg, #f7faff, #edf4ff);
+}
+
+.assignment-form label {
+  display: grid;
+  gap: 9px;
+  color: var(--text);
+  font-size: 0.88rem;
+  font-weight: 800;
+}
+
+.assignment-form select {
+  min-height: 50px;
+  background-color: #fff;
+}
+
+.assignment-form .secondary-button {
+  width: 100%;
+  min-height: 50px;
+  border-color: #2675d8;
+  color: #1859b5;
+  background: #fff;
+}
+
+.assignment-form .secondary-button:hover {
+  color: #fff;
+  background: #1859b5;
+}
+
+@media (max-width: 760px) {
+  .assignment-form {
+    padding: 16px;
+  }
+}
