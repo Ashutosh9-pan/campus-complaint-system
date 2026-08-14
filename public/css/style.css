@@ -1655,3 +1655,15 @@ body.modal-open { overflow: hidden; }
     font-size: 0.75rem;
   }
 }
+.escalation-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 10px 16px;
+  border: 1px solid #b45309;
+  border-radius: 999px;
+  color: #7c2d12;
+  background: #ffedd5;
+  font-size: 0.86rem;
+  font-weight: 800;
+  box-shadow: 0 5px 14px rgba(180, 83, 9, 0.16);
+}

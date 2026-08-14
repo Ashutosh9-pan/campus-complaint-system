@@ -104,6 +104,7 @@ const getMyComplaints = async (req, res) => {
               description, priority, status, admin_note,
               evidence_image, assigned_department, assigned_at,
               created_at, updated_at, resolved_at, due_at,
+              is_escalated, escalation_level, escalated_at,
               CASE
                 WHEN due_at IS NOT NULL
                   AND due_at < NOW()
@@ -153,6 +154,9 @@ const getAllComplaints = async (req, res) => {
         c.created_at,
         c.updated_at,
         c.resolved_at,
+        c.is_escalated,
+        c.escalation_level,
+        c.escalated_at,
         c.due_at,
         CASE
           WHEN c.due_at IS NOT NULL

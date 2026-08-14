@@ -486,6 +486,16 @@ ${
     : ""
 }
 
+${
+  Number(complaint.is_escalated) === 1
+    ? `<span class="escalation-badge">
+         ${escapeHtml(
+           complaint.escalation_level || "Level 1"
+         )} Escalation
+       </span>`
+    : ""
+}
+
             ${
               complaint.assigned_department
                 ? `<span class="assignment-badge">
@@ -1014,6 +1024,18 @@ function renderAdminComplaints(complaints) {
                   ? `<span class="overdue-badge">Overdue</span>`
                   : ""
               }
+
+              ${
+  Number(complaint.is_escalated) === 1
+    ? `
+      <span class="escalation-badge">
+        ${escapeHtml(
+          complaint.escalation_level || "Level 1"
+        )} Escalation
+      </span>
+    `
+    : ""
+}
 
               ${
                 complaint.assigned_department
