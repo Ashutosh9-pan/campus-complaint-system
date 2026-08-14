@@ -1,0 +1,227 @@
+/* CampusResolve — compact admin dashboard enhancement */
+#adminDashboard.cr-admin-shell {
+  --cr-blue: #1759b8;
+  --cr-ink: #102d36;
+  --cr-muted: #637d86;
+  --cr-line: #d8e7e7;
+  --cr-soft: #f4f9f8;
+}
+
+#adminDashboard.cr-admin-shell .dashboard-heading {
+  padding-block: clamp(26px, 5vw, 62px) 24px;
+}
+
+#adminDashboard.cr-admin-shell .dashboard-heading h1 {
+  max-width: 900px;
+  font-size: clamp(2.4rem, 6vw, 5.2rem);
+  line-height: .96;
+  letter-spacing: -.055em;
+}
+
+#adminDashboard.cr-admin-shell .stats-grid {
+  gap: 16px;
+  margin-block: 22px 32px;
+}
+
+#adminDashboard.cr-admin-shell .stat-card {
+  min-height: 150px;
+  padding: 26px 30px;
+  border-radius: 22px;
+  box-shadow: 0 12px 35px rgba(16,45,54,.07);
+}
+
+#adminDashboard.cr-admin-shell .stat-card strong {
+  font-size: clamp(2.2rem, 4vw, 3.5rem);
+}
+
+#adminDashboard.cr-admin-shell .admin-section,
+#adminDashboard.cr-admin-shell .analytics-section,
+#adminDashboard.cr-admin-shell .complaints-section {
+  margin-block: 24px;
+  padding: clamp(22px, 3vw, 38px);
+  border-radius: 26px;
+}
+
+.cr-section-tools {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 22px;
+}
+
+.cr-section-tools h2 { margin: 0; }
+
+.cr-analytics-toggle {
+  min-width: 168px;
+  padding: 13px 18px;
+  border: 1px solid var(--cr-line);
+  border-radius: 14px;
+  background: #fff;
+  color: var(--cr-ink);
+  font: inherit;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.cr-analytics-toggle:hover,
+.cr-analytics-toggle:focus-visible {
+  border-color: var(--cr-blue);
+  color: var(--cr-blue);
+  outline: none;
+}
+
+.cr-analytics-collapsed > :not(.cr-section-tools) { display: none !important; }
+
+#adminDashboard.cr-admin-shell .analytics-grid,
+#adminDashboard.cr-admin-shell .analytics-summary-grid {
+  gap: 16px;
+}
+
+#adminDashboard.cr-admin-shell .analytics-card,
+#adminDashboard.cr-admin-shell .analytics-summary-card {
+  min-height: auto;
+  padding: 22px;
+  border-radius: 18px;
+  background: var(--cr-soft);
+}
+
+#adminDashboard.cr-admin-shell .filters,
+#adminDashboard.cr-admin-shell .filter-grid {
+  gap: 12px;
+  margin-bottom: 22px;
+}
+
+#adminDashboard.cr-admin-shell .filters input,
+#adminDashboard.cr-admin-shell .filters select,
+#adminDashboard.cr-admin-shell .filter-grid input,
+#adminDashboard.cr-admin-shell .filter-grid select {
+  min-height: 54px;
+  border-radius: 14px;
+}
+
+#adminDashboard.cr-admin-shell .complaint-list { gap: 16px; }
+
+#adminDashboard.cr-admin-shell .complaint-item {
+  padding: 24px;
+  border-radius: 20px;
+  box-shadow: 0 10px 30px rgba(16,45,54,.055);
+}
+
+#adminDashboard.cr-admin-shell .complaint-item.cr-compact-card {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(270px, 360px);
+  column-gap: 24px;
+  align-items: start;
+}
+
+#adminDashboard.cr-admin-shell .complaint-item.cr-compact-card > * { min-width: 0; }
+
+#adminDashboard.cr-admin-shell .complaint-description {
+  margin-block: 12px;
+  font-size: 1rem;
+  line-height: 1.6;
+}
+
+#adminDashboard.cr-admin-shell .complaint-meta {
+  gap: 8px;
+  margin-block: 12px;
+}
+
+#adminDashboard.cr-admin-shell .complaint-meta span,
+#adminDashboard.cr-admin-shell .status-badge,
+#adminDashboard.cr-admin-shell .priority-badge,
+#adminDashboard.cr-admin-shell .due-date-badge,
+#adminDashboard.cr-admin-shell .registered-date-badge,
+#adminDashboard.cr-admin-shell .overdue-badge,
+#adminDashboard.cr-admin-shell .escalation-badge {
+  padding: 8px 12px;
+  font-size: .78rem;
+}
+
+#adminDashboard.cr-admin-shell .assignment-form,
+#adminDashboard.cr-admin-shell .status-update-form {
+  padding: 18px;
+  border-radius: 16px;
+  background: var(--cr-soft);
+}
+
+#adminDashboard.cr-admin-shell .assignment-form select,
+#adminDashboard.cr-admin-shell .status-update-form select,
+#adminDashboard.cr-admin-shell .status-update-form textarea {
+  min-height: 50px;
+}
+
+#adminDashboard.cr-admin-shell .complaint-evidence {
+  margin-block: 16px;
+}
+
+#adminDashboard.cr-admin-shell .complaint-evidence img {
+  display: block;
+  width: min(100%, 320px);
+  height: 180px;
+  object-fit: cover;
+  border-radius: 14px;
+  cursor: zoom-in;
+  transition: transform .2s ease, box-shadow .2s ease;
+}
+
+#adminDashboard.cr-admin-shell .complaint-evidence img:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 25px rgba(16,45,54,.16);
+}
+
+.cr-lightbox {
+  position: fixed;
+  z-index: 9999;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+  background: rgba(5,18,23,.88);
+}
+
+.cr-lightbox[hidden] { display: none; }
+
+.cr-lightbox img {
+  max-width: min(1100px, 94vw);
+  max-height: 88vh;
+  border-radius: 16px;
+  box-shadow: 0 25px 80px rgba(0,0,0,.45);
+}
+
+.cr-lightbox button {
+  position: fixed;
+  top: 18px;
+  right: 22px;
+  width: 48px;
+  height: 48px;
+  border: 1px solid rgba(255,255,255,.35);
+  border-radius: 50%;
+  background: rgba(255,255,255,.14);
+  color: white;
+  font-size: 1.8rem;
+  cursor: pointer;
+}
+
+@media (max-width: 900px) {
+  #adminDashboard.cr-admin-shell .complaint-item.cr-compact-card {
+    display: block;
+  }
+
+  #adminDashboard.cr-admin-shell .assignment-form,
+  #adminDashboard.cr-admin-shell .status-update-form { margin-top: 18px; }
+}
+
+@media (max-width: 620px) {
+  #adminDashboard.cr-admin-shell .dashboard-heading h1 { font-size: 2.45rem; }
+  #adminDashboard.cr-admin-shell .stats-grid { grid-template-columns: repeat(2, 1fr); }
+  #adminDashboard.cr-admin-shell .stat-card { min-height: 120px; padding: 20px; }
+  #adminDashboard.cr-admin-shell .admin-section,
+  #adminDashboard.cr-admin-shell .analytics-section,
+  #adminDashboard.cr-admin-shell .complaints-section { padding: 18px; border-radius: 20px; }
+  .cr-section-tools { align-items: flex-start; flex-direction: column; }
+  .cr-analytics-toggle { width: 100%; }
+  #adminDashboard.cr-admin-shell .complaint-item { padding: 18px; }
+  #adminDashboard.cr-admin-shell .complaint-evidence img { width: 100%; height: 190px; }
+}
