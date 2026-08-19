@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-  <link rel="stylesheet" href="/css/admin-redesign.css?v=2" />
 <head>
   <meta charset="UTF-8" />
 
@@ -16,8 +15,7 @@
 
   <title>CampusResolve | Complaint Management System</title>
 
-  <link rel="stylesheet" href="css/style.css" />
-  <link rel="stylesheet" href="css/admin-redesign.css?v=1">
+  <link rel="stylesheet" href="css/style.css?v=73" />
 </head>
 
 <body>
@@ -54,6 +52,12 @@
           with campus administrators for faster and more
           accountable resolutions.
         </p>
+
+        <div class="auth-feature-pills" aria-label="Platform highlights">
+          <span>✓ Secure access</span>
+          <span>↻ Live tracking</span>
+          <span>◎ Evidence support</span>
+        </div>
       </div>
 
       <div class="workflow-preview">
@@ -79,10 +83,19 @@
 
     <section class="auth-panel">
       <div class="auth-card">
+        <div class="auth-portal-badge">
+          <span class="auth-portal-badge-icon">CR</span>
+          <span>
+            <strong>CampusResolve Portal</strong>
+            <small>Secure campus service access</small>
+          </span>
+          <span class="auth-online-dot" title="System online"></span>
+        </div>
+
         <div class="auth-heading">
-          <p class="eyebrow">Welcome</p>
-          <h2>Access your portal</h2>
-          <p>Login or create your student account.</p>
+          <p id="authEyebrow" class="eyebrow">Welcome</p>
+          <h2 id="authTitle">Access your portal</h2>
+          <p id="authSubtitle">Login or create your student account.</p>
         </div>
 
         <div class="auth-tabs" role="tablist">
@@ -101,6 +114,11 @@
           >
             Student Registration
           </button>
+        </div>
+
+        <div class="auth-security-strip">
+          <span class="auth-security-icon">◆</span>
+          <span>Your account is protected with secure authentication.</span>
         </div>
 
         <!-- Login Form -->
@@ -170,8 +188,232 @@
             </span>
           </label>
 
+          <div class="login-help-row">
+            <span>Having trouble signing in?</span>
+            <button
+              id="forgotPasswordButton"
+              class="auth-text-button"
+              type="button"
+            >
+              Forgot password?
+            </button>
+          </div>
+
+          <button class="primary-button auth-login-submit" type="submit">
+            <span>Login to Portal</span>
+            <span class="auth-login-arrow" aria-hidden="true">→</span>
+          </button>
+        </form>
+
+        <!-- Forgot Password: Email -->
+        <form id="forgotPasswordForm" class="auth-form hidden">
+          <div class="recovery-step-badge">
+            <span>1</span>
+            <strong>Account recovery</strong>
+          </div>
+
+          <label for="forgotPasswordEmail">
+            Registered email address
+
+            <input
+              id="forgotPasswordEmail"
+              type="email"
+              placeholder="name@campus.edu"
+              autocomplete="email"
+              required
+            />
+          </label>
+
+          <p class="recovery-hint">
+            We will send a 6-digit verification code to the
+            email linked to your CampusResolve account.
+          </p>
+
           <button class="primary-button" type="submit">
-            Login to Portal
+            Send verification code
+          </button>
+
+          <button
+            class="auth-back-button"
+            type="button"
+            data-recovery-back="login"
+          >
+            ← Back to login
+          </button>
+        </form>
+
+        <!-- Forgot Password: OTP -->
+        <form id="verifyResetOtpForm" class="auth-form hidden">
+          <div class="recovery-step-badge">
+            <span>2</span>
+            <strong>Verify your email</strong>
+          </div>
+
+          <p class="recovery-hint">
+            Enter the latest 6-digit code sent to
+            <strong id="resetEmailPreview">your email</strong>.
+            The code expires in 10 minutes.
+          </p>
+
+          <label for="resetOtp">
+            Verification code
+
+            <input
+              id="resetOtp"
+              class="otp-input"
+              type="text"
+              inputmode="numeric"
+              autocomplete="one-time-code"
+              placeholder="000000"
+              maxlength="6"
+              pattern="[0-9]{6}"
+              required
+            />
+          </label>
+
+          <button class="primary-button" type="submit">
+            Verify code
+          </button>
+
+          <div class="recovery-actions">
+            <button
+              id="resendResetOtpButton"
+              class="auth-text-button"
+              type="button"
+            >
+              Resend code
+            </button>
+
+            <button
+              class="auth-text-button"
+              type="button"
+              data-recovery-back="email"
+            >
+              Change email
+            </button>
+          </div>
+        </form>
+
+        <!-- Forgot Password: New Password -->
+        <form id="resetPasswordForm" class="auth-form hidden">
+          <div class="recovery-step-badge">
+            <span>3</span>
+            <strong>Create new password</strong>
+          </div>
+
+          <p class="recovery-hint">
+            Use at least 8 characters. Choose a password you
+            have not shared with anyone else.
+          </p>
+
+          <label for="newResetPassword">
+            New password
+
+            <span class="password-field">
+              <input
+                id="newResetPassword"
+                type="password"
+                placeholder="Minimum 8 characters"
+                autocomplete="new-password"
+                minlength="8"
+                required
+              />
+
+              <button
+                class="password-toggle"
+                type="button"
+                data-password-toggle="newResetPassword"
+                aria-label="Show password"
+                title="Show password"
+              >
+                <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true">
+                  <path
+                    d="M2 12s3.5-6 10-6 10 6 10 6-3.5 6-10 6S2 12 2 12Z"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linejoin="round"
+                  />
+                  <circle
+                    cx="12"
+                    cy="12"
+                    r="3"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                  />
+                  <path
+                    class="eye-slash"
+                    d="M4 4 20 20"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                  />
+                </svg>
+              </button>
+            </span>
+          </label>
+
+          <label for="confirmResetPassword">
+            Confirm new password
+
+            <span class="password-field">
+              <input
+                id="confirmResetPassword"
+                type="password"
+                placeholder="Re-enter new password"
+                autocomplete="new-password"
+                minlength="8"
+                required
+              />
+
+              <button
+                class="password-toggle"
+                type="button"
+                data-password-toggle="confirmResetPassword"
+                aria-label="Show password"
+                title="Show password"
+              >
+                <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true">
+                  <path
+                    d="M2 12s3.5-6 10-6 10 6 10 6-3.5 6-10 6S2 12 2 12Z"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linejoin="round"
+                  />
+                  <circle
+                    cx="12"
+                    cy="12"
+                    r="3"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                  />
+                  <path
+                    class="eye-slash"
+                    d="M4 4 20 20"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                  />
+                </svg>
+              </button>
+            </span>
+          </label>
+
+          <button class="primary-button" type="submit">
+            Reset password
+          </button>
+
+          <button
+            class="auth-back-button"
+            type="button"
+            data-recovery-back="login"
+          >
+            ← Cancel and return to login
           </button>
         </form>
 
@@ -281,7 +523,7 @@
           class="secondary-button"
           type="button"
         >
-          Logout
+          <span class="cr-button-icon"><svg class="cr-icon" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M10 5H5v14h5"/><path d="M13 8l4 4-4 4"/><path d="M8 12h9"/></svg></span><span>Logout</span>
         </button>
       </div>
     </header>
@@ -311,24 +553,49 @@
         </div>
 
         <div class="stats-grid">
-          <article class="stat-card">
-            <span>Total complaints</span>
-            <strong id="studentTotal">0</strong>
+          <article class="stat-card total-stat">
+            <span class="cr-kpi-icon"><svg class="cr-icon" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M7 3.5h7l4 4V20H7z"/><path d="M14 3.5V8h4"/><path d="M10 12h5M10 15h5M10 18h3"/></svg></span>
+            <div class="cr-kpi-content">
+              <span class="cr-kpi-label">Total complaints</span>
+              <strong id="studentTotal">0</strong>
+              <small>All time complaints</small>
+            </div>
+            <svg class="cr-kpi-spark" viewBox="0 0 92 34" aria-hidden="true">
+              <polyline points="2,29 11,25 19,27 28,16 36,22 44,9 52,24 62,17 70,20 79,7 90,12"/>
+            </svg>
           </article>
-
           <article class="stat-card raised-stat">
-            <span>Raised</span>
-            <strong id="studentRaised">0</strong>
+            <span class="cr-kpi-icon"><svg class="cr-icon" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8"/><path d="M12 16V8"/><path d="m8.8 11.2 3.2-3.2 3.2 3.2"/></svg></span>
+            <div class="cr-kpi-content">
+              <span class="cr-kpi-label">Raised</span>
+              <strong id="studentRaised">0</strong>
+              <small>Awaiting action</small>
+            </div>
+            <svg class="cr-kpi-spark" viewBox="0 0 92 34" aria-hidden="true">
+              <polyline points="2,29 11,25 19,27 28,16 36,22 44,9 52,24 62,17 70,20 79,7 90,12"/>
+            </svg>
           </article>
-
           <article class="stat-card progress-stat">
-            <span>In progress</span>
-            <strong id="studentProgress">0</strong>
+            <span class="cr-kpi-icon"><svg class="cr-icon" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M7 3h10M7 21h10"/><path d="M8 3c0 4 1.5 6 4 7.5C14.5 9 16 7 16 3M8 21c0-4 1.5-6 4-7.5 2.5 1.5 4 3.5 4 7.5"/></svg></span>
+            <div class="cr-kpi-content">
+              <span class="cr-kpi-label">In progress</span>
+              <strong id="studentProgress">0</strong>
+              <small>Being processed</small>
+            </div>
+            <svg class="cr-kpi-spark" viewBox="0 0 92 34" aria-hidden="true">
+              <polyline points="2,29 11,25 19,27 28,16 36,22 44,9 52,24 62,17 70,20 79,7 90,12"/>
+            </svg>
           </article>
-
           <article class="stat-card resolved-stat">
-            <span>Resolved</span>
-            <strong id="studentResolved">0</strong>
+            <span class="cr-kpi-icon"><svg class="cr-icon" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8"/><path d="m8.5 12.2 2.3 2.4 4.8-5"/></svg></span>
+            <div class="cr-kpi-content">
+              <span class="cr-kpi-label">Resolved</span>
+              <strong id="studentResolved">0</strong>
+              <small>Successfully resolved</small>
+            </div>
+            <svg class="cr-kpi-spark" viewBox="0 0 92 34" aria-hidden="true">
+              <polyline points="2,29 11,25 19,27 28,16 36,22 44,9 52,24 62,17 70,20 79,7 90,12"/>
+            </svg>
           </article>
         </div>
 
@@ -343,27 +610,27 @@
                 <h2>Raise a complaint</h2>
               </div>
 
-              <span class="panel-badge">Student</span>
+              <span class="panel-badge"><span class="cr-small-icon"><svg class="cr-icon" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="3"/><path d="M6 19c.8-3.3 2.8-5 6-5s5.2 1.7 6 5"/></svg></span>Student</span>
             </div>
 
             <form id="complaintForm">
               <label for="complaintTitle">
                 Complaint title
 
-                <input
+                <span class="cr-field-shell "><span class="cr-field-icon"><svg class="cr-icon" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M7 3.5h7l4 4V20H7z"/><path d="M14 3.5V8h4"/><path d="M10 12h5M10 15h5"/></svg></span><input
                   id="complaintTitle"
                   type="text"
                   placeholder="Briefly describe the issue"
                   maxlength="150"
                   required
-                />
+                /></span>
               </label>
 
               <div class="form-row">
                 <label for="complaintCategory">
                   Category
 
-                  <select id="complaintCategory" required>
+                  <span class="cr-field-shell "><span class="cr-field-icon"><svg class="cr-icon" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="6" height="6" rx="1"/><rect x="14" y="4" width="6" height="6" rx="1"/><rect x="4" y="14" width="6" height="6" rx="1"/><rect x="14" y="14" width="6" height="6" rx="1"/></svg></span><select id="complaintCategory" required>
                     <option value="">Select category</option>
                     <option>Electrical</option>
                     <option>Plumbing</option>
@@ -372,41 +639,41 @@
                     <option>Furniture</option>
                     <option>Security</option>
                     <option>Other</option>
-                  </select>
+                  </select></span>
                 </label>
 
                 <label for="complaintPriority">
                   Priority
 
-                  <select id="complaintPriority">
+                  <span class="cr-field-shell cr-priority-shell"><span class="cr-field-icon"><svg class="cr-icon" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M6 21V4"/><path d="M6 5h10l-2 3 2 3H6"/></svg></span><select id="complaintPriority">
                     <option>Low</option>
                     <option selected>Medium</option>
                     <option>High</option>
                     <option>Urgent</option>
-                  </select>
+                  </select></span>
                 </label>
               </div>
 
               <label for="complaintLocation">
                 Location
 
-                <input
+                <span class="cr-field-shell "><span class="cr-field-icon"><svg class="cr-icon" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s6-5.4 6-11a6 6 0 1 0-12 0c0 5.6 6 11 6 11Z"/><circle cx="12" cy="10" r="2"/></svg></span><input
                   id="complaintLocation"
                   type="text"
                   placeholder="Hostel, block and room number"
                   required
-                />
+                /></span>
               </label>
 
               <label for="complaintDescription">
                 Description
 
-                <textarea
+                <span class="cr-field-shell cr-textarea-shell"><span class="cr-field-icon"><svg class="cr-icon" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="m5 19 3.5-.8L18 8.7a1.8 1.8 0 0 0 0-2.5l-.2-.2a1.8 1.8 0 0 0-2.5 0L5.8 15.5z"/><path d="m14.5 6.8 2.7 2.7"/></svg></span><textarea
                   id="complaintDescription"
                   rows="5"
                   placeholder="Explain the issue clearly..."
                   required
-                ></textarea>
+                ></textarea></span>
               </label>
               <label class="evidence-upload" for="complaintEvidence">
   Evidence image
@@ -425,7 +692,7 @@
 </label>
 
               <button class="primary-button" type="submit">
-                Submit Complaint
+                <span class="cr-button-icon"><svg class="cr-icon" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="m3.5 11 17-7-7 17-2.1-7.8z"/><path d="m11.4 13.2 4.2-4.2"/></svg></span><span>Submit Complaint</span>
               </button>
             </form>
           </section>
@@ -443,7 +710,7 @@
                 type="button"
                 aria-label="Refresh complaints"
               >
-                ↻
+                <span class="cr-refresh-icon"><svg class="cr-icon" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M20 7v5h-5"/><path d="M18.2 15.5A7 7 0 1 1 19 8l1 4"/></svg></span>
               </button>
             </div>
 
@@ -456,8 +723,8 @@
       </section>
 
       <!-- Admin Dashboard -->
-      <section id="adminDashboard" class="role-dashboard hidden">
-        <div class="page-heading">
+      <section id="adminDashboard" class="role-dashboard admin-dashboard-v2 hidden">
+        <div class="page-heading admin-page-heading">
           <div>
             <p class="eyebrow">Administration</p>
             <h1>Complaint operations</h1>
@@ -469,29 +736,29 @@
           </div>
         </div>
 
-        <div class="stats-grid">
-          <article class="stat-card">
-            <span>Total complaints</span>
-            <strong id="adminTotal">0</strong>
+        <div class="stats-grid admin-stats-grid">
+          <article class="stat-card admin-stat-card admin-total-stat">
+            <span class="admin-stat-icon">▤</span>
+            <div><span>Total complaints</span><strong id="adminTotal">0</strong><small>All campus issues</small></div>
           </article>
 
-          <article class="stat-card raised-stat">
-            <span>Raised</span>
-            <strong id="adminRaised">0</strong>
+          <article class="stat-card admin-stat-card raised-stat">
+            <span class="admin-stat-icon">↑</span>
+            <div><span>Raised</span><strong id="adminRaised">0</strong><small>Awaiting action</small></div>
           </article>
 
-          <article class="stat-card progress-stat">
-            <span>In progress</span>
-            <strong id="adminProgress">0</strong>
+          <article class="stat-card admin-stat-card progress-stat">
+            <span class="admin-stat-icon">⌛</span>
+            <div><span>In progress</span><strong id="adminProgress">0</strong><small>Being processed</small></div>
           </article>
 
-          <article class="stat-card resolved-stat">
-            <span>Resolved</span>
-            <strong id="adminResolved">0</strong>
+          <article class="stat-card admin-stat-card resolved-stat">
+            <span class="admin-stat-icon">✓</span>
+            <div><span>Resolved</span><strong id="adminResolved">0</strong><small>Successfully closed</small></div>
           </article>
         </div>
 
-        <section class="panel analytics-panel">
+        <section class="panel analytics-panel admin-analytics-panel">
   <div class="panel-heading">
     <div>
       <p class="eyebrow">Insights</p>
@@ -512,19 +779,72 @@
   </div>
 
   <div class="analytics-summary">
-    <article class="analytics-summary-card">
-      <span>Resolution rate</span>
-      <strong id="analyticsResolutionRate">0%</strong>
+    <article class="analytics-summary-card analytics-rate-card">
+      <div class="analytics-summary-head">
+        <div class="analytics-summary-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M7 12.5L10.2 15.7L17 8.9" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z" stroke="currentColor" stroke-width="2"/>
+          </svg>
+        </div>
+        <span>Resolution rate</span>
+      </div>
+      <div class="analytics-summary-body">
+        <strong id="analyticsResolutionRate">0%</strong>
+        <small>Resolved complaints performance</small>
+        <div class="analytics-card-meta">
+          <span class="analytics-live-pill"><i></i> Live data</span>
+          <svg class="analytics-mini-chart" viewBox="0 0 92 28" aria-hidden="true">
+            <path d="M2 23 C14 22, 18 16, 28 17 S44 8, 54 12 S70 5, 90 7" />
+          </svg>
+        </div>
+      </div>
     </article>
 
-    <article class="analytics-summary-card">
-      <span>Average resolution time</span>
-      <strong id="analyticsResolutionTime">0 hrs</strong>
+    <article class="analytics-summary-card analytics-time-card">
+      <div class="analytics-summary-head">
+        <div class="analytics-summary-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M12 7V12L15.5 15.5" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z" stroke="currentColor" stroke-width="2"/>
+          </svg>
+        </div>
+        <span>Average resolution time</span>
+      </div>
+      <div class="analytics-summary-body">
+        <strong id="analyticsResolutionTime">0 hrs</strong>
+        <small>Average time to close complaints</small>
+        <div class="analytics-card-meta">
+          <span class="analytics-live-pill"><i></i> Live data</span>
+          <svg class="analytics-mini-chart" viewBox="0 0 92 28" aria-hidden="true">
+            <path d="M2 8 C14 10, 18 17, 30 15 S47 21, 58 14 S74 18, 90 10" />
+          </svg>
+        </div>
+      </div>
     </article>
 
-    <article class="analytics-summary-card">
-      <span>Assigned departments</span>
-      <strong id="analyticsDepartmentCount">0</strong>
+    <article class="analytics-summary-card analytics-department-card">
+      <div class="analytics-summary-head">
+        <div class="analytics-summary-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect x="3" y="4" width="7" height="7" rx="2" stroke="currentColor" stroke-width="2"/>
+            <rect x="14" y="4" width="7" height="7" rx="2" stroke="currentColor" stroke-width="2"/>
+            <rect x="3" y="15" width="7" height="6" rx="2" stroke="currentColor" stroke-width="2"/>
+            <rect x="14" y="15" width="7" height="6" rx="2" stroke="currentColor" stroke-width="2"/>
+          </svg>
+        </div>
+        <span>Assigned departments</span>
+      </div>
+      <div class="analytics-summary-body">
+        <strong id="analyticsDepartmentCount">0</strong>
+        <small>Teams currently handling complaints</small>
+        <div class="analytics-card-meta">
+          <span class="analytics-live-pill"><i></i> Live data</span>
+          <svg class="analytics-mini-chart" viewBox="0 0 92 28" aria-hidden="true">
+            <path d="M2 21 C13 20, 20 19, 30 14 S48 16, 59 9 S75 11, 90 5" />
+          </svg>
+        </div>
+      </div>
     </article>
   </div>
 
@@ -579,7 +899,158 @@
   </div>
 </section>
 
-        <section class="panel">
+
+        <section class="panel admin-feedback-panel">
+          <div class="panel-heading admin-feedback-heading">
+            <div>
+              <p class="eyebrow">Student voice</p>
+              <h2>Feedback overview</h2>
+              <p>
+                Review student satisfaction after complaint resolution.
+              </p>
+            </div>
+
+            <div class="admin-feedback-tools">
+              <select id="feedbackRatingFilter" aria-label="Filter feedback by rating">
+                <option value="">All ratings</option>
+                <option value="5">5 ★</option>
+                <option value="4">4 ★</option>
+                <option value="3">3 ★</option>
+                <option value="2">2 ★</option>
+                <option value="1">1 ★</option>
+              </select>
+
+              <button
+                id="refreshFeedbackOverview"
+                class="secondary-button compact-button"
+                type="button"
+              >
+                Refresh feedback
+              </button>
+            </div>
+          </div>
+
+          <div class="admin-feedback-summary">
+            <article class="admin-feedback-stat feedback-average-card">
+              <span class="admin-feedback-stat-icon" aria-hidden="true">★</span>
+              <div class="feedback-summary-content">
+                <small>Average rating</small>
+                <strong id="feedbackAverageRating">0.0</strong>
+                <div id="feedbackAverageStars" class="feedback-average-stars" aria-label="Average rating stars">
+                  <span>★</span><span>★</span><span>★</span><span>★</span><span>★</span>
+                </div>
+                <span>out of 5</span>
+              </div>
+            </article>
+
+            <article class="admin-feedback-stat feedback-total-card">
+              <span class="admin-feedback-stat-icon" aria-hidden="true">◎</span>
+              <div>
+                <small>Total feedback</small>
+                <strong id="feedbackTotalCount">0</strong>
+                <span>student responses</span>
+              </div>
+            </article>
+
+            <article class="admin-feedback-stat feedback-five-card">
+              <span class="admin-feedback-stat-icon" aria-hidden="true">✓</span>
+              <div>
+                <small>5-star ratings</small>
+                <strong id="feedbackFiveStarCount">0</strong>
+                <span>excellent resolutions</span>
+              </div>
+            </article>
+          </div>
+
+
+          <div class="feedback-insights-grid">
+            <article class="feedback-insight-card insight-best-department">
+              <span class="feedback-insight-icon" aria-hidden="true">↑</span>
+              <div class="feedback-insight-content">
+                <small>Highest-rated department</small>
+                <strong id="highestRatedDepartment">Not available</strong>
+                <div class="feedback-insight-footer">
+                  <span id="highestRatedDepartmentScore" class="feedback-score-pill">—</span>
+                  <span id="highestRatedDepartmentMeta" class="feedback-count-text">No ratings yet</span>
+                </div>
+              </div>
+            </article>
+
+            <article class="feedback-insight-card insight-low-department">
+              <span class="feedback-insight-icon" aria-hidden="true">↓</span>
+              <div class="feedback-insight-content">
+                <small>Lowest-rated department</small>
+                <strong id="lowestRatedDepartment">Not available</strong>
+                <div class="feedback-insight-footer">
+                  <span id="lowestRatedDepartmentScore" class="feedback-score-pill">—</span>
+                  <span id="lowestRatedDepartmentMeta" class="feedback-count-text">No ratings yet</span>
+                </div>
+              </div>
+            </article>
+
+            <article class="feedback-insight-card insight-best-category">
+              <span class="feedback-insight-icon" aria-hidden="true">★</span>
+              <div class="feedback-insight-content">
+                <small>Highest-rated category</small>
+                <strong id="highestRatedCategory">Not available</strong>
+                <div class="feedback-insight-footer">
+                  <span id="highestRatedCategoryScore" class="feedback-score-pill">—</span>
+                  <span id="highestRatedCategoryMeta" class="feedback-count-text">No ratings yet</span>
+                </div>
+              </div>
+            </article>
+
+            <article class="feedback-insight-card insight-low-category">
+              <span class="feedback-insight-icon" aria-hidden="true">!</span>
+              <div class="feedback-insight-content">
+                <small>Lowest-rated category</small>
+                <strong id="lowestRatedCategory">Not available</strong>
+                <div class="feedback-insight-footer">
+                  <span id="lowestRatedCategoryScore" class="feedback-score-pill">—</span>
+                  <span id="lowestRatedCategoryMeta" class="feedback-count-text">No ratings yet</span>
+                </div>
+              </div>
+            </article>
+          </div>
+
+          <article class="feedback-trend-card">
+            <div class="analytics-card-heading feedback-trend-heading">
+              <div>
+                <h3>30-day rating trend</h3>
+                <span>Daily average student satisfaction</span>
+              </div>
+              <span id="feedbackTrendSummary" class="feedback-trend-summary">
+                Waiting for feedback data
+              </span>
+            </div>
+
+            <div id="feedbackTrendChart" class="feedback-trend-chart">
+              <div class="feedback-empty-state">
+                No rating trend data available yet.
+              </div>
+            </div>
+          </article>
+
+          <div class="admin-feedback-layout">
+            <article class="admin-feedback-distribution-card">
+              <div class="analytics-card-heading">
+                <h3>Rating distribution</h3>
+                <span>1–5 star satisfaction breakdown</span>
+              </div>
+              <div id="feedbackDistribution" class="feedback-distribution"></div>
+            </article>
+
+            <article class="admin-feedback-recent-card">
+              <div class="analytics-card-heading">
+                <h3>Recent feedback</h3>
+                <span>Latest student responses</span>
+              </div>
+              <div id="recentFeedbackList" class="recent-feedback-list"></div>
+            </article>
+          </div>
+        </section>
+
+        <section class="panel admin-queue-panel">
           <div class="panel-heading admin-heading">
             <div>
               <p class="eyebrow">Issue queue</p>
@@ -608,6 +1079,12 @@
               <option>Raised</option>
               <option>In Progress</option>
               <option>Resolved</option>
+            </select>
+
+            <select id="adminEscalationFilter">
+              <option value="">All complaints</option>
+              <option value="1">Escalated only</option>
+              <option value="0">Not escalated</option>
             </select>
 
             <select id="adminPriorityFilter">
@@ -676,7 +1153,7 @@
     </section>
   </div>
 
-<script src="js/app.js?v=9"></script>
-<script src="js/admin-redesign.js?v=2"></script>
+<script src="js/app.js?v=73"></script>
+<script src="js/admin-redesign.js?v=4"></script>
 </body>
 </html>

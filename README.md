@@ -1,20 +1,21 @@
-CampusResolve Admin Dashboard Redesign
-======================================
+CampusResolve — Compact Admin Dashboard Update
 
-1. Copy admin-redesign.css into your project:
-   public/css/admin-redesign.css
+Replace these three files in your project:
 
-2. Copy admin-redesign.js into your project:
-   public/js/admin-redesign.js
+1. public/index.html
+2. public/css/style.css
+3. public/js/app.js
 
-3. In public/index.html, add this AFTER the existing CSS links:
-   <link rel="stylesheet" href="css/admin-redesign.css?v=1">
+What changed:
+- Admin complaint cards now show a clean compact summary.
+- Click "View complaint details" to open the full complaint.
+- Evidence, student information, department assignment, status update,
+  administrator notes, overdue state, due date and escalation badge remain available.
+- Student dashboard and existing API behavior are preserved.
 
-4. In public/index.html, add this immediately BEFORE </body> and AFTER app.js:
-   <script src="js/admin-redesign.js?v=1"></script>
+After replacement:
+1. Stop the server with Ctrl+C.
+2. Run: node server.js
+3. Open http://localhost:5000
+4. Press Ctrl+F5 once to clear the old browser cache.
 
-5. Restart the server, open http://localhost:5000 and press Ctrl+F5.
-
-This enhancement preserves the existing IDs, API calls and forms. It only
-reorders and styles the admin interface in the browser. Remove the two added
-HTML tags to return instantly to the previous design.

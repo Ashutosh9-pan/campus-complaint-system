@@ -1,15 +1,19 @@
 const express = require("express");
+const multer = require("multer");
 
 const {
   createComplaint,
   getMyComplaints,
   getAllComplaints,
   getComplaintAnalytics,
+  getFeedbackOverview,
+  exportComplaintsCsv,
   updateComplaintStatus,
   updateComplaintAssignment,
   getComplaintHistory,
   updateOwnComplaint,
   deleteOwnComplaint,
+  submitComplaintFeedback,
 } = require("../controllers/complaintController");
 
 const {
@@ -21,18 +25,50 @@ const {
   uploadEvidence,
 } = require("../middleware/uploadMiddleware");
 
+const handleEvidenceUpload = (req, res, next) => {
+  uploadEvidence.single("evidence")(req, res, (error) => {
+    if (!error) {
+      return next();
+    }
+
+    if (error instanceof multer.MulterError) {
+      if (error.code === "LIMIT_FILE_SIZE") {
+        return res.status(400).json({
+          success: false,
+          message: "Evidence image must be smaller than 5 MB.",
+        });
+      }
+
+      if (error.code === "LIMIT_UNEXPECTED_FILE") {
+        return res.status(400).json({
+          success: false,
+          message: "Please upload only JPG, PNG or WebP images.",
+        });
+      }
+
+      return res.status(400).json({
+        success: false,
+        message: "Unable to upload the evidence image.",
+      });
+    }
+
+    return res.status(400).json({
+      success: false,
+      message: "Invalid evidence image.",
+    });
+  });
+};
+
 const router = express.Router();
 
-// Student: create complaint with optional evidence image
 router.post(
   "/",
   authenticate,
   authorize("student"),
-  uploadEvidence.single("evidence"),
+  handleEvidenceUpload,
   createComplaint
 );
 
-// Student: view their own complaints
 router.get(
   "/mine",
   authenticate,
@@ -40,7 +76,6 @@ router.get(
   getMyComplaints
 );
 
-// Admin: view and filter all complaints
 router.get(
   "/",
   authenticate,
@@ -48,7 +83,6 @@ router.get(
   getAllComplaints
 );
 
-// Admin: view complaint analytics
 router.get(
   "/analytics",
   authenticate,
@@ -56,14 +90,26 @@ router.get(
   getComplaintAnalytics
 );
 
-// Student or admin: view complaint status history
+router.get(
+  "/feedback/overview",
+  authenticate,
+  authorize("admin"),
+  getFeedbackOverview
+);
+
+router.get(
+  "/export/csv",
+  authenticate,
+  authorize("admin"),
+  exportComplaintsCsv
+);
+
 router.get(
   "/:id/history",
   authenticate,
   getComplaintHistory
 );
 
-// Student: edit own complaint while status is Raised
 router.put(
   "/:id",
   authenticate,
@@ -71,7 +117,6 @@ router.put(
   updateOwnComplaint
 );
 
-// Student: delete own complaint while status is Raised
 router.delete(
   "/:id",
   authenticate,
@@ -79,7 +124,13 @@ router.delete(
   deleteOwnComplaint
 );
 
-// Admin: assign complaint to a department
+router.post(
+  "/:id/feedback",
+  authenticate,
+  authorize("student"),
+  submitComplaintFeedback
+);
+
 router.patch(
   "/:id/assign",
   authenticate,
@@ -87,7 +138,6 @@ router.patch(
   updateComplaintAssignment
 );
 
-// Admin: update complaint status and note
 router.patch(
   "/:id/status",
   authenticate,
