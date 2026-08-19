@@ -75,7 +75,7 @@ Campus complaint handling often becomes difficult when requests are scattered ac
 ### Password Recovery
 
 <p align="center">
-  <img src="screenshots/forgot-password.png" alt="Forgot Password" width="900">
+<img src="screenshots/forgot-password-v2.png" alt="Forgot Password" width="900">
 </p>
 
 ---
