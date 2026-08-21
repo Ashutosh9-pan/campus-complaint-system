@@ -25,9 +25,13 @@ const escapeHtml = (value) =>
     .replaceAll("'", "&#039;");
 
 const sendPasswordResetOtp = async ({ to, name, otp }) => {
+  if (!process.env.EMAIL_USER || !process.env.EMAIL_PASS) {
+    throw new Error("EMAIL_USER or EMAIL_PASS is missing.");
+  }
+
   const safeName = escapeHtml(name);
 
-  await transporter.sendMail({
+  const info = await transporter.sendMail({
     from: `"CampusResolve" <${process.env.EMAIL_USER}>`,
     to,
     subject: "CampusResolve Password Reset OTP",
@@ -51,7 +55,9 @@ CampusResolve
         margin: auto;
         padding: 24px;
       ">
-        <h2>CampusResolve</h2>
+        <h2 style="margin-bottom: 8px;">
+          CampusResolve
+        </h2>
 
         <p>Hello ${safeName},</p>
 
@@ -93,6 +99,8 @@ CampusResolve
       </div>
     `,
   });
+
+  return info;
 };
 
 const verifyEmailTransport = async () => {
