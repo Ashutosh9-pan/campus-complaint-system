@@ -1,6 +1,12 @@
-const { Resend } = require("resend");
+const nodemailer = require("nodemailer");
 
-const resend = new Resend(process.env.RESEND_API_KEY);
+const transporter = nodemailer.createTransport({
+  service: "gmail",
+  auth: {
+    user: process.env.EMAIL_USER,
+    pass: process.env.EMAIL_PASS,
+  },
+});
 
 const escapeHtml = (value) =>
   String(value || "")
@@ -13,13 +19,9 @@ const escapeHtml = (value) =>
 const sendPasswordResetOtp = async ({ to, name, otp }) => {
   const safeName = escapeHtml(name);
 
-  const { data, error } = await resend.emails.send({
-    // Testing sender provided by Resend.
-    // Later we'll replace this with your verified CampusResolve domain.
-    from: "CampusResolve <onboarding@resend.dev>",
-
-    to: [to],
-
+  await transporter.sendMail({
+    from: `"CampusResolve" <${process.env.EMAIL_USER}>`,
+    to,
     subject: "CampusResolve Password Reset OTP",
 
     text: `
@@ -41,9 +43,7 @@ CampusResolve
         margin: auto;
         padding: 24px;
       ">
-        <h2 style="margin-bottom: 8px;">
-          CampusResolve
-        </h2>
+        <h2>CampusResolve</h2>
 
         <p>Hello ${safeName},</p>
 
@@ -85,21 +85,14 @@ CampusResolve
       </div>
     `,
   });
-
-  if (error) {
-    throw new Error(
-      error.message || "Failed to send password reset email."
-    );
-  }
-
-  return data;
 };
 
-// Kept so existing imports don't break.
 const verifyEmailTransport = async () => {
-  if (!process.env.RESEND_API_KEY) {
-    throw new Error("RESEND_API_KEY is missing.");
+  if (!process.env.EMAIL_USER || !process.env.EMAIL_PASS) {
+    throw new Error("EMAIL_USER or EMAIL_PASS is missing.");
   }
+
+  await transporter.verify();
 
   return true;
 };
