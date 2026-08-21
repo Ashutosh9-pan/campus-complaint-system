@@ -1,5 +1,4 @@
-CREATE DATABASE IF NOT EXISTS campus_complaint_system;
-USE campus_complaint_system;
+USE railway;
 
 CREATE TABLE users (
     id INT PRIMARY KEY AUTO_INCREMENT,
