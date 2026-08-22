@@ -1,20 +1,4 @@
-const nodemailer = require("nodemailer");
-
-const transporter = nodemailer.createTransport({
-  host: "smtp.gmail.com",
-  port: 587,
-  secure: false,
-  family: 4,
-
-  auth: {
-    user: process.env.EMAIL_USER,
-    pass: process.env.EMAIL_PASS,
-  },
-
-  connectionTimeout: 15000,
-  greetingTimeout: 15000,
-  socketTimeout: 20000,
-});
+const BREVO_API_URL = "https://api.brevo.com/v3/smtp/email";
 
 const escapeHtml = (value) =>
   String(value || "")
@@ -24,20 +8,58 @@ const escapeHtml = (value) =>
     .replaceAll('"', "&quot;")
     .replaceAll("'", "&#039;");
 
-const sendPasswordResetOtp = async ({ to, name, otp }) => {
-  if (!process.env.EMAIL_USER || !process.env.EMAIL_PASS) {
-    throw new Error("EMAIL_USER or EMAIL_PASS is missing.");
+const getBrevoConfig = () => {
+  const apiKey = process.env.BREVO_API_KEY;
+  const senderEmail = process.env.BREVO_SENDER_EMAIL;
+  const senderName = process.env.BREVO_SENDER_NAME || "CampusResolve";
+
+  if (!apiKey) {
+    throw new Error("BREVO_API_KEY is missing.");
   }
 
-  const safeName = escapeHtml(name);
+  if (!senderEmail) {
+    throw new Error("BREVO_SENDER_EMAIL is missing.");
+  }
 
-  const info = await transporter.sendMail({
-    from: `"CampusResolve" <${process.env.EMAIL_USER}>`,
-    to,
+  return {
+    apiKey,
+    senderEmail,
+    senderName,
+  };
+};
+
+const sendPasswordResetOtp = async ({ to, name, otp }) => {
+  
+  const { apiKey, senderEmail, senderName } = getBrevoConfig();
+
+  if (!to) {
+    throw new Error("Recipient email is missing.");
+  }
+
+  if (!otp) {
+    throw new Error("OTP is missing.");
+  }
+
+  const safeName = escapeHtml(name || "User");
+  const safeOtp = escapeHtml(otp);
+
+  const payload = {
+    sender: {
+      name: senderName,
+      email: senderEmail,
+    },
+
+    to: [
+      {
+        email: to,
+        name: name || "User",
+      },
+    ],
+
     subject: "CampusResolve Password Reset OTP",
 
-    text: `
-Hello ${name},
+    textContent: `
+Hello ${name || "User"},
 
 Your CampusResolve password reset OTP is: ${otp}
 
@@ -48,7 +70,7 @@ If you did not request a password reset, you can ignore this email.
 CampusResolve
     `.trim(),
 
-    html: `
+    htmlContent: `
       <div style="
         font-family: Arial, sans-serif;
         max-width: 520px;
@@ -74,7 +96,7 @@ CampusResolve
           letter-spacing: 8px;
           margin: 24px 0;
         ">
-          ${otp}
+          ${safeOtp}
         </div>
 
         <p>
@@ -98,17 +120,53 @@ CampusResolve
         </small>
       </div>
     `,
-  });
+  };
 
-  return info;
+  let response;
+
+  try {
+    response = await fetch(BREVO_API_URL, {
+      method: "POST",
+
+      headers: {
+        accept: "application/json",
+        "content-type": "application/json",
+        "api-key": apiKey,
+      },
+
+      body: JSON.stringify(payload),
+    });
+  } catch (error) {
+    console.error("Brevo network error:", error.message);
+    throw error;
+  }
+
+
+  let responseData = {};
+
+  try {
+    responseData = await response.json();
+  } catch {
+    responseData = {};
+  }
+
+  if (!response.ok) {
+    console.error("Brevo error response:", responseData);
+
+    const message =
+      responseData?.message ||
+      `Brevo email request failed with status ${response.status}.`;
+
+    throw new Error(message);
+  }
+
+
+  return responseData;
 };
 
 const verifyEmailTransport = async () => {
-  if (!process.env.EMAIL_USER || !process.env.EMAIL_PASS) {
-    throw new Error("EMAIL_USER or EMAIL_PASS is missing.");
-  }
+  getBrevoConfig();
 
-  await transporter.verify();
 
   return true;
 };
