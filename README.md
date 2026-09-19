@@ -1,5 +1,9 @@
 # CampusResolve
 
+> **Stack:** Node.js • Express.js • MySQL • JWT • Multer • Railway
+
+🌐 [Live Demo](https://campus-complaint-system-production.up.railway.app) • [📂 Repository](https://github.com/Ashutosh9-pan/campus-complaint-system)
+
 > A secure, full-stack campus complaint management system for students and administrators.
 
 CampusResolve helps students raise and track campus issues while giving administrators a structured workflow to review, assign, update, monitor, and analyze complaints.
